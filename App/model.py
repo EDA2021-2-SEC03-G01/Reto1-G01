@@ -36,11 +36,55 @@ los mismos.
 """
 
 # Construccion de modelos
+def newCatalog():
+    catalog={"artists":None,"artworks":None}
+    catalog["artists"]=lt.newList()
+    catalog["artworks"]=lt.newList()
+    return catalog
 
 # Funciones para agregar informacion al catalogo
+def addArtist(catalog, artist):
+    lt.addLast(catalog["artists"], artist)
+    
+def addArtworks(catalog, artwork):
+    lt.addLast(catalog["artworks"], artwork)
 
 # Funciones para creacion de datos
+def newArtist(nombre, nac, gen, año_nac, año_def, wiki, ulan):
+    artist={
+        "nombre":nombre,
+        "nacionalidad":nac,
+        "genero":gen,
+        "año de nacimiento":año_nac,
+        "año de defuncion":año_def, 
+        "Wiki QID":wiki, 
+        "Ulan ID":ulan
+        }
+    return artist
 
+def newArtwork(tit, art, fecha_cre, medio, dim, fecha_adq, credit, acc, clas, dep, cat, url, circ, prof, diam, alt, larg, ancho, peso):
+    artwork={
+        "titulo":tit,
+        "artista":art,
+        "fecha de creacion":fecha_cre,
+        "medio":medio,
+        "dimension":dim,
+        "fecha de adquisicion":fecha_adq,
+        "credit line":credit,
+        "numero de acceso":acc,
+        "clasificacion":clas,
+        "departamento":dep,
+        "Catalogado":cat,
+        "url":url,
+        "Circunferencia":circ,
+        "profundidad":prof,
+        "diametro":diam,
+        "altura":alt,
+        "largo":larg,
+        "ancho":ancho,
+        "peso":peso
+        }
+    return artwork
 # Funciones de consulta
 
 # Funciones utilizadas para comparar elementos dentro de una lista
