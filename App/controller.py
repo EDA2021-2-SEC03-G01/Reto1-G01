@@ -57,7 +57,3 @@ def loadArtworks(catalog):
 # Funciones de ordenamiento
 
 # Funciones de consulta sobre el catálogo
-
-def req_1(catalog, año_in, año_fin):
-    lista = model.req_1(catalog, año_in, año_fin)
-    return lista

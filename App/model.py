@@ -89,32 +89,5 @@ def newArtwork(tit, art, fecha_cre, medio, dim, fecha_adq, credit, acc, clas, de
 # Funciones de consulta
 
 # Funciones utilizadas para comparar elementos dentro de una lista
-    
-def compareYears(artista1, artista2):
-    return (int(artista1['año de nacimiento']) < int(artista2['año de nacimiento']))
 
 # Funciones de ordenamiento
-
-def sortArtists(catalog):
-    return sa.sort(catalog['artists'], compareYears)
-
-# Requerimientos 
-
-def req_1(catalog, año_in, año_fin):
-    lista = lt.newList()
-    total = 0
-    artistas = sortArtists(catalog)
-    for artista in artistas:
-        if artista["año de nacimiento"] > año_in and artista["año de nacimiento"] < año_fin:
-            dic_artist = {"nombre": artista["nombre"], "año de nacimiento": artista["año de nacimiento"],  "nacionalidad": artista["nacionalidad"],  "genero": artista["genero"] }
-            lt.addLast(lista, dic_artist)
-            total += 1
-    lista_def = lt.newList()
-    lt.addLast(lista_def, total)
-    lt.addLast(lista_def, lt.getElement(lista, 1))
-    lt.addLast(lista_def, lt.getElement(lista, 2))
-    lt.addLast(lista_def, lt.getElement(lista, 3))
-    lt.addLast(lista_def, lt.getElement(lista, -3))
-    lt.addLast(lista_def, lt.getElement(lista, -2))
-    lt.addLast(lista_def, lt.getElement(lista, -1))
-    return lista_def
