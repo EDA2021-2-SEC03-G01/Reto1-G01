@@ -88,6 +88,26 @@ def newArtwork(tit, art, fecha_cre, medio, dim, fecha_adq, credit, acc, clas, de
 
 # Funciones de consulta
 
+def getLastArtists (catalog):
+    ultimos = lt.newList()
+    largoLista = int(lt.size(catalog["artists"]))
+    for pos in range(1, largoLista + 1):
+        if (largoLista - pos) < 3:
+            artista = lt.getElement(catalog["artists"], pos)
+            lt.addLast(ultimos, artista)
+
+    return ultimos
+
+def getLastArtworks (catalog):
+    ultimos = lt.newList()
+    largoLista = int(lt.size(catalog["artworks"]))
+    for pos in range(1, largoLista + 1):
+        if (largoLista - pos) < 3:
+            artista = lt.getElement(catalog["artworks"], pos)
+            lt.addLast(ultimos, artista)
+
+    return ultimos
+
 # Funciones utilizadas para comparar elementos dentro de una lista
 
 # Funciones de ordenamiento

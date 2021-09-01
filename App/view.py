@@ -56,6 +56,8 @@ def loadData(catalog):
     """
     controller.loadData(catalog)
 
+catalog = None
+
 """
 Menu principal
 """
@@ -67,6 +69,9 @@ while True:
         catalog = initCatalog()
         loadData(catalog)
         print('Artistas cargados: ' + str(lt.size(catalog['artists'])))
+        print('Últimos tres artistas:\n' + str(controller.getLastArtists(catalog)))
+        print('Obras cargadas: ' + str(lt.size(catalog['artworks'])))
+        print('Últimas tres obras:\n' + str(controller.getLastArtworks(catalog)))
 
     elif int(inputs[0]) == 2:
         pass
