@@ -38,7 +38,7 @@ los mismos.
 # Construccion de modelos
 def newCatalog():
     catalog={"artists":None,"artworks":None}
-    catalog["artists"]=lt.newList()
+    catalog["artists"]=lt.newList(cmpfunction=compareArtists)
     catalog["artworks"]=lt.newList()
     return catalog
 
@@ -55,8 +55,8 @@ def newArtist(nombre, nac, gen, año_nac, año_def, wiki, ulan):
         "nombre":nombre,
         "nacionalidad":nac,
         "genero":gen,
-        "año de nacimiento":año_nac,
-        "año de defuncion":año_def, 
+        "ano de nacimiento":año_nac,
+        "ano de defuncion":año_def, 
         "Wiki QID":wiki, 
         "Ulan ID":ulan
         }
@@ -88,6 +88,14 @@ def newArtwork(tit, art, fecha_cre, medio, dim, fecha_adq, credit, acc, clas, de
 
 # Funciones de consulta
 
+def getFirstArtists (catalog):
+    primeros = lt.newList()
+    for pos in range(1, 3):
+        artista = lt.getElement(catalog["artists"], pos)
+        lt.addLast(primeros, artista)
+
+    return primeros
+
 def getLastArtists (catalog):
     ultimos = lt.newList()
     largoLista = int(lt.size(catalog["artists"]))
@@ -110,4 +118,44 @@ def getLastArtworks (catalog):
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 
+def compareArtists (artista1, artista2):
+    if artista1["nombre"] < artista2["nombre"]:
+        return -1
+    elif artista1["nombre"] > artista2["nombre"]:
+        return 1
+    else:
+        return 0
+
+def compareYears(artista1, artista2):
+    if (int(artista1['ano de nacimiento']) <= int(artista2['ano de nacimiento'])):
+        return True
+    else:
+        return False
+
 # Funciones de ordenamiento
+
+def sortArtists(catalog):
+    return sa.sort(catalog['artists'], compareYears)
+
+# Requerimientos 
+
+def req_1(catalog, año_in, año_fin):
+    lista = lt.newList()
+    total = 0
+    artistas = sortArtists(catalog)
+    for artista in artistas:
+        if artista["ano de nacimiento"] > int(año_in) and artista["ano de nacimiento"] < int(año_fin):
+            dic_artist = {"nombre": artista["nombre"], "ano de nacimiento": artista["ano de nacimiento"],  "nacionalidad": artista["nacionalidad"],  "genero": artista["genero"] }
+            lt.addLast(lista, dic_artist)
+            total += 1
+    lista_def = lt.newList()
+    lt.addLast(lista_def, total)
+    for pos in range(1, 3):
+        artista = lt.getElement(lista, pos)
+        lt.addLast(lista_def, artista)
+    largoLista = int(lt.size(lista))
+    for pos in range(1, largoLista + 1):
+        if (largoLista - pos) < 3:
+            artista = lt.getElement(lista, pos)
+            lt.addLast(lista_def, artista)
+    return lista_def
