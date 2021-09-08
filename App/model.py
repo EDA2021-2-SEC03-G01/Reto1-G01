@@ -50,41 +50,7 @@ def addArtworks(catalog, artwork):
     lt.addLast(catalog["artworks"], artwork)
 
 # Funciones para creacion de datos
-def newArtist(nombre, nac, gen, año_nac, año_def, wiki, ulan):
-    artist={
-        "nombre":nombre,
-        "nacionalidad":nac,
-        "genero":gen,
-        "ano de nacimiento":año_nac,
-        "ano de defuncion":año_def, 
-        "Wiki QID":wiki, 
-        "Ulan ID":ulan
-        }
-    return artist
 
-def newArtwork(tit, art, fecha_cre, medio, dim, fecha_adq, credit, acc, clas, dep, cat, url, circ, prof, diam, alt, larg, ancho, peso):
-    artwork={
-        "titulo":tit,
-        "artista":art,
-        "fecha de creacion":fecha_cre,
-        "medio":medio,
-        "dimension":dim,
-        "fecha de adquisicion":fecha_adq,
-        "credit line":credit,
-        "numero de acceso":acc,
-        "clasificacion":clas,
-        "departamento":dep,
-        "Catalogado":cat,
-        "url":url,
-        "Circunferencia":circ,
-        "profundidad":prof,
-        "diametro":diam,
-        "altura":alt,
-        "largo":larg,
-        "ancho":ancho,
-        "peso":peso
-        }
-    return artwork
 
 # Funciones de consulta
 
@@ -119,15 +85,15 @@ def getLastArtworks (catalog):
 # Funciones utilizadas para comparar elementos dentro de una lista
 
 def compareArtists (artista1, artista2):
-    if artista1["nombre"] < artista2["nombre"]:
+    if artista1["DisplayName"] < artista2["DisplayName"]:
         return -1
-    elif artista1["nombre"] > artista2["nombre"]:
+    elif artista1["DisplayName"] > artista2["DisplayName"]:
         return 1
     else:
         return 0
 
 def compareYears(artista1, artista2):
-    if (int(artista1['ano de nacimiento']) <= int(artista2['ano de nacimiento'])):
+    if (int(artista1['BeginDate']) <= int(artista2['BeginDate'])):
         return True
     else:
         return False
@@ -137,15 +103,19 @@ def compareYears(artista1, artista2):
 def sortArtists(catalog):
     return sa.sort(catalog['artists'], compareYears)
 
+
 # Requerimientos 
 
 def req_1(catalog, año_in, año_fin):
+    print("hola")
     lista = lt.newList()
     total = 0
     artistas = sortArtists(catalog)
+    print("hola.2")
     for artista in artistas:
-        if artista["ano de nacimiento"] > int(año_in) and artista["ano de nacimiento"] < int(año_fin):
-            dic_artist = {"nombre": artista["nombre"], "ano de nacimiento": artista["ano de nacimiento"],  "nacionalidad": artista["nacionalidad"],  "genero": artista["genero"] }
+        print("hola.3")
+        if int(artista["BeginDate"]) > int(año_in) and int(artista["BeginDate"]) < int(año_fin):
+            dic_artist = {"DisplayName": artista["DisplayName"], "BeginDate": artista["BeginDate"],  "Nationality": artista["Nationality"],  "Gender": artista["Gender"] }
             lt.addLast(lista, dic_artist)
             total += 1
     lista_def = lt.newList()
