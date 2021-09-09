@@ -74,10 +74,19 @@ while True:
         print('Últimas tres obras:\n' + str(controller.getLastArtworks(catalog)))
 
     elif int(inputs[0]) == 2:
-        año_in = input("Ingrese el año inicial: ")
-        año_fin = input("Ingrese el año final: ")
-        artistas = controller.req_1(catalog, año_in, año_fin )
+        año_in = int(input("Ingrese el año inicial: "))
+        año_fin = int(input("Ingrese el año final: "))
+        (total, artistas) = controller.req_1(catalog, año_in, año_fin )
+        print("El numero de artistas en este rango es: " + str(total))
         print(artistas)
+
+    elif int(inputs[0]) == 3:
+        fecha_in = str(input("Ingrese el año inicial: "))
+        fecha_fin = str(input("Ingrese el año final: "))
+        (total, obras) = controller.req_2(catalog, fecha_in, fecha_fin)
+        print("El numero de obras en este rango es: " + str(total))
+        print(obras)
+        
     else:
         sys.exit(0)
 sys.exit(0)

@@ -59,6 +59,9 @@ def loadArtworks(catalog):
 def sortArtists(catalog): 
     model.sortArtists(catalog)
 
+def sortArtworks(catalog): 
+    model.sortArtworks(catalog)
+
 # Funciones de consulta sobre el catálogo
 
 def getLastArtists(catalog):
@@ -69,6 +72,11 @@ def getLastArtworks(catalog):
     ultimos = model.getLastArtworks(catalog)
     return ultimos
 
+#Requerimientos
 def req_1(catalog, año_in, año_fin):
-    lista = model.req_1(catalog, año_in, año_fin)
-    return lista
+    (total, lista) = model.req_1(catalog, año_in, año_fin)
+    return (total, lista)
+
+def req_2(catalog, fecha_in, fecha_fin):
+    (total, lista) = model.req_2(catalog, fecha_in, fecha_fin)
+    return (total, lista)
