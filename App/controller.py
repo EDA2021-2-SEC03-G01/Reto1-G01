@@ -74,9 +74,9 @@ def getLastArtworks(catalog):
 
 #Requerimientos
 def req_1(catalog, año_in, año_fin, tipo_ord):
-    (total, elapsed_time_mseg, lista) = model.req_1(catalog, año_in, año_fin, tipo_ord)
+    (total,elapsed_time_mseg, lista) = model.req_1(catalog, año_in, año_fin, tipo_ord)
     return (total, elapsed_time_mseg, lista)
 
-def req_2(catalog, fecha_in, fecha_fin):
-    (total, lista) = model.req_2(catalog, fecha_in, fecha_fin)
-    return (total, lista)
+def req_2(catalog, fecha_in, fecha_fin, tipo_ord):
+    (total, elapsed_time_mseg, lista) = model.req_2(catalog, fecha_in, fecha_fin, tipo_ord)
+    return (total, elapsed_time_mseg, lista)

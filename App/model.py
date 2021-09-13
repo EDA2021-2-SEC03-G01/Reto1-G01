@@ -46,12 +46,12 @@ def newCatalog(tipo_artistas, tipo_obras):
     if tipo_artistas == 1:
         tipo_artistas = "ARRAY_LIST"
     else:
-        tipo_artistas = "SINGLE_LINKED"
+        tipo_artistas = "LINKED_LIST"
 
     if tipo_obras == 1:
         tipo_obras = "ARRAY_LIST"
     else:
-        tipo_obras = "SINGLE_LINKED"
+        tipo_obras = "LINKED_LIST"
 
     catalog["artists"]=lt.newList(datastructure = tipo_artistas, cmpfunction = compareArtists)
     catalog["artworks"]=lt.newList(datastructure = tipo_obras, cmpfunction = compareArtworks)
@@ -124,7 +124,7 @@ def compareArtworks(obra1, obra2):
         return 0
 
 def compareDateAcquired(obra1, obra2):
-    if (int(obra1["DateAcquired"]) <= int(obra2["DateAcquired"])):
+    if (date.fromisoformat(obra1["Adquisicion"]) <= date.fromisoformat(obra2["Adquisicion"])):
         return True
     else:
         return False
@@ -170,6 +170,7 @@ def req_1(catalog, año_in, año_fin, tipo_ord):
         lista = qs.sort(lista, compareYears)
         stop_time = time.process_time()
         elapsed_time_mseg = (stop_time - start_time)*1000
+
     lista_def = lt.newList()
     for pos in range(1, 4):
         artista = lt.getElement(lista, pos)
@@ -181,20 +182,41 @@ def req_1(catalog, año_in, año_fin, tipo_ord):
             lt.addLast(lista_def, artista)
     return (total, elapsed_time_mseg, lista_def)
 
-def req_2(catalog, fecha_in, fecha_fin):
+def req_2(catalog, fecha_in, fecha_fin, tipo_ord):
     lista = lt.newList()
     total = 0
     obras = catalog["artworks"]
     for i in range(1, lt.size(obras)+1) :
         obra = lt.getElement(obras, i)
-        fecha_adq = date.fromisoformat(obra["DateAcquired"])
+        if obra["DateAcquired"] != "":
+            fecha_adq = date.fromisoformat(obra["DateAcquired"])
         fecha_ini = date.fromisoformat(fecha_in)
         fecha_final = date.fromisoformat(fecha_fin)
         if fecha_adq > fecha_ini and fecha_adq < fecha_final:
-            dic_artist = {"Titulo": obra["Title"], "Artistas": obra["ConstituentID"], "Fecha": obra["Date"], "Medio": obra["Medium"],  "Dimensiones": obra["Dimensions"] }
-            lt.addLast(lista, dic_artist)
+            dic_artwork = {"Titulo": obra["Title"], "Artistas": obra["ConstituentID"], "Fecha": obra["Date"], "Medio": obra["Medium"],  "Dimensiones": obra["Dimensions"], "Adquisicion": obra["DateAcquired"]  }
+            lt.addLast(lista, dic_artwork)
             total += 1
-    lista = sa.sort(lista, compareYears)
+    if tipo_ord == 1:
+        start_time = time.process_time()
+        lista = sa.sort(lista, compareDateAcquired)
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+    elif tipo_ord == 2:
+        start_time = time.process_time()
+        lista = ins.sort(lista, compareDateAcquired)
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+    elif tipo_ord == 3:
+        start_time = time.process_time()
+        lista = ms.sort(lista, compareDateAcquired)
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+    else:
+        start_time = time.process_time()
+        lista = qs.sort(lista, compareDateAcquired)
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+
     lista_def = lt.newList()
     for pos in range(1, 4):
         artista = lt.getElement(lista, pos)
@@ -204,4 +226,4 @@ def req_2(catalog, fecha_in, fecha_fin):
         if (largoLista - pos) < 3:
             artista = lt.getElement(lista, pos)
             lt.addLast(lista_def, artista)
-    return (total, lista_def)
+    return (total, elapsed_time_mseg, lista_def)

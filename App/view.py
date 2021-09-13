@@ -65,7 +65,7 @@ while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
-        print("1-ARRAY LIST \n2-SINGLE LINKED")
+        print("1 - ARRAY LIST \n2 - LINKED_LIST")
         tipo_artistas = int(input("Seleccione el tipo de representacion de la lista de artistas: "))
         tipo_obras = int(input("Seleccione el tipo de representacion de la lista de obras: "))
         print("Cargando información de los archivos ....")
@@ -82,17 +82,19 @@ while True:
         año_in = int(input("Ingrese el año inicial: "))
         año_fin = int(input("Ingrese el año final: "))
         (total, elapsed_time_mseg, artistas) = controller.req_1(catalog, año_in, año_fin, tipo_ord)
+        print("Para mostrar estos datos el tiempo (mseg) fue: " + str(elapsed_time_mseg))
         print("El numero de artistas en este rango es: " + str(total))
-        print("Para ordenar los artistas conológicamente el tiempo (mseg) fue: " + str(elapsed_time_mseg))
         print(artistas)
 
     elif int(inputs[0]) == 3:
-        fecha_in = str(input("Ingrese el año inicial: "))
-        fecha_fin = str(input("Ingrese el año final: "))
-        (total, obras) = controller.req_2(catalog, fecha_in, fecha_fin)
+        print("Tipos de algoritmos de ordenamiento iterativo:\n1- Shell\n2- Insertion\n3- Merge\n4- Quick")
+        tipo_ord = int(input("Seleccione el tipo ordenamiento: "))
+        fecha_in = (input("Ingrese el año inicial: "))
+        fecha_fin = (input("Ingrese el año final: "))
+        (total,elapsed_time_mseg, obras) = controller.req_2(catalog, fecha_in, fecha_fin, tipo_ord)
+        print("Para mostrar estos datos el tiempo (mseg) fue: " + str(elapsed_time_mseg))
         print("El numero de obras en este rango es: " + str(total))
         print(obras)
-        
     else:
         sys.exit(0)
 sys.exit(0)
