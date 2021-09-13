@@ -26,9 +26,13 @@
 
 
 import config as cf
+import time
 from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import shellsort as sa
-from datetime import date, datetime
+from DISClib.Algorithms.Sorting import insertionsort as ins
+from DISClib.Algorithms.Sorting import mergesort as ms
+from DISClib.Algorithms.Sorting import quicksort as qs
+from datetime import date
 assert cf
 
 """
@@ -37,10 +41,20 @@ otra para las categorias de los mismos.
 """
 
 # Construccion de modelos
-def newCatalog():
+def newCatalog(tipo_artistas, tipo_obras):
     catalog={"artists":None,"artworks":None}
-    catalog["artists"]=lt.newList(cmpfunction = compareArtists)
-    catalog["artworks"]=lt.newList(cmpfunction = compareArtworks)
+    if tipo_artistas == 1:
+        tipo_artistas = "ARRAY_LIST"
+    else:
+        tipo_artistas = "SINGLE_LINKED"
+
+    if tipo_obras == 1:
+        tipo_obras = "ARRAY_LIST"
+    else:
+        tipo_obras = "SINGLE_LINKED"
+
+    catalog["artists"]=lt.newList(datastructure = tipo_artistas, cmpfunction = compareArtists)
+    catalog["artworks"]=lt.newList(datastructure = tipo_obras, cmpfunction = compareArtworks)
     return catalog
 
 # Funciones para agregar informacion al catalogo
@@ -109,7 +123,7 @@ def compareArtworks(obra1, obra2):
     else:
         return 0
 
-def compareDate(obra1, obra2):
+def compareDateAcquired(obra1, obra2):
     if (int(obra1["DateAcquired"]) <= int(obra2["DateAcquired"])):
         return True
     else:
@@ -117,16 +131,15 @@ def compareDate(obra1, obra2):
 
 # Funciones de ordenamiento
 
-def sortArtists(catalog):
-    return sa.sort(catalog['artists'], compareYears)
+def sortArtists(catalog, tipo_ord):
+    return tipo_ord.sort(catalog['artists'], compareYears)
 
 def sortArtworks(catalog):
-    return sa.sort(catalog['artworks'], compareDate)
-
+    return sa.sort(catalog['artworks'], compareDateAcquired)
 
 # Requerimientos 
 
-def req_1(catalog, año_in, año_fin):
+def req_1(catalog, año_in, año_fin, tipo_ord):
     lista = lt.newList()
     total = 0
     artistas = catalog["artists"]
@@ -137,7 +150,26 @@ def req_1(catalog, año_in, año_fin):
             "Fecha de fallecimiento": artista["EndDate"],  "Nacionalidad": artista["Nationality"],  "Genero": artista["Gender"] }
             lt.addLast(lista, dic_artist)
             total += 1
-    lista = sa.sort(lista, compareYears)
+    if tipo_ord == 1:
+        start_time = time.process_time()
+        lista = sa.sort(lista, compareYears)
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+    elif tipo_ord == 2:
+        start_time = time.process_time()
+        lista = ins.sort(lista, compareYears)
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+    elif tipo_ord == 3:
+        start_time = time.process_time()
+        lista = ms.sort(lista, compareYears)
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+    else:
+        start_time = time.process_time()
+        lista = qs.sort(lista, compareYears)
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
     lista_def = lt.newList()
     for pos in range(1, 4):
         artista = lt.getElement(lista, pos)
@@ -147,8 +179,7 @@ def req_1(catalog, año_in, año_fin):
         if (largoLista - pos) < 3:
             artista = lt.getElement(lista, pos)
             lt.addLast(lista_def, artista)
-    return (total, lista_def)
-
+    return (total, elapsed_time_mseg, lista_def)
 
 def req_2(catalog, fecha_in, fecha_fin):
     lista = lt.newList()

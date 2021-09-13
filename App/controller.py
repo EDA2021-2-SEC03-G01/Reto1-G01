@@ -30,9 +30,9 @@ El controlador se encarga de mediar entre la vista y el modelo.
 """
 
 # Inicialización del Catálogo de libros
-def initCatalog():
+def initCatalog(tipo_artistas, tipo_obras):
    
-    catalog = model.newCatalog()
+    catalog = model.newCatalog(tipo_artistas, tipo_obras)
     return catalog
 
 # Funciones para la carga de datos
@@ -56,8 +56,8 @@ def loadArtworks(catalog):
 
 # Funciones de ordenamiento
 
-def sortArtists(catalog): 
-    model.sortArtists(catalog)
+def sortArtists(catalog, tipo_ord): 
+    model.sortArtists(catalog, tipo_ord)
 
 def sortArtworks(catalog): 
     model.sortArtworks(catalog)
@@ -73,9 +73,9 @@ def getLastArtworks(catalog):
     return ultimos
 
 #Requerimientos
-def req_1(catalog, año_in, año_fin):
-    (total, lista) = model.req_1(catalog, año_in, año_fin)
-    return (total, lista)
+def req_1(catalog, año_in, año_fin, tipo_ord):
+    (total, elapsed_time_mseg, lista) = model.req_1(catalog, año_in, año_fin, tipo_ord)
+    return (total, elapsed_time_mseg, lista)
 
 def req_2(catalog, fecha_in, fecha_fin):
     (total, lista) = model.req_2(catalog, fecha_in, fecha_fin)

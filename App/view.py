@@ -43,11 +43,11 @@ def printMenu():
     print("5- Clasificar las obras por la nacionalidad de sus creadores")
     print("0- Salir")
 
-def initCatalog():
+def initCatalog(tipo_artistas, tipo_obras):
     """
     Inicializa el catalogo de libros
     """
-    return controller.initCatalog()
+    return controller.initCatalog(tipo_artistas, tipo_obras)
 
 
 def loadData(catalog):
@@ -65,8 +65,11 @@ while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
+        print("1-ARRAY LIST \n2-SINGLE LINKED")
+        tipo_artistas = int(input("Seleccione el tipo de representacion de la lista de artistas: "))
+        tipo_obras = int(input("Seleccione el tipo de representacion de la lista de obras: "))
         print("Cargando información de los archivos ....")
-        catalog = initCatalog()
+        catalog = initCatalog(tipo_artistas, tipo_obras)
         loadData(catalog)
         print('Artistas cargados: ' + str(lt.size(catalog['artists'])))
         print('Últimos tres artistas:\n' + str(controller.getLastArtists(catalog)))
@@ -74,10 +77,13 @@ while True:
         print('Últimas tres obras:\n' + str(controller.getLastArtworks(catalog)))
 
     elif int(inputs[0]) == 2:
+        print("Tipos de algoritmos de ordenamiento iterativo:\n1- Shell\n2- Insertion\n3- Merge\n4- Quick")
+        tipo_ord = int(input("Seleccione el tipo ordenamiento: "))
         año_in = int(input("Ingrese el año inicial: "))
         año_fin = int(input("Ingrese el año final: "))
-        (total, artistas) = controller.req_1(catalog, año_in, año_fin )
+        (total, elapsed_time_mseg, artistas) = controller.req_1(catalog, año_in, año_fin, tipo_ord)
         print("El numero de artistas en este rango es: " + str(total))
+        print("Para ordenar los artistas conológicamente el tiempo (mseg) fue: " + str(elapsed_time_mseg))
         print(artistas)
 
     elif int(inputs[0]) == 3:
