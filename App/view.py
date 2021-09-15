@@ -89,8 +89,8 @@ while True:
     elif int(inputs[0]) == 3:
         print("Tipos de algoritmos de ordenamiento iterativo:\n1- Shell\n2- Insertion\n3- Merge\n4- Quick")
         tipo_ord = int(input("Seleccione el tipo ordenamiento: "))
-        fecha_in = (input("Ingrese el año inicial: "))
-        fecha_fin = (input("Ingrese el año final: "))
+        fecha_in = (input("Ingrese la fecha inicial (YYYY-MM-DD): "))
+        fecha_fin = (input("Ingrese la fecha final (YYYY-MM-DD): "))
         (total,elapsed_time_mseg, obras) = controller.req_2(catalog, fecha_in, fecha_fin, tipo_ord)
         print("Para mostrar estos datos el tiempo (mseg) fue: " + str(elapsed_time_mseg))
         print("El numero de obras en este rango es: " + str(total))

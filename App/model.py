@@ -190,6 +190,8 @@ def req_2(catalog, fecha_in, fecha_fin, tipo_ord):
         obra = lt.getElement(obras, i)
         if obra["DateAcquired"] != "":
             fecha_adq = date.fromisoformat(obra["DateAcquired"])
+        else:
+            fecha_adq = date.fromisoformat("0001-01-01")
         fecha_ini = date.fromisoformat(fecha_in)
         fecha_final = date.fromisoformat(fecha_fin)
         if fecha_adq > fecha_ini and fecha_adq < fecha_final:
