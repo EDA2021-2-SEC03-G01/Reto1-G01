@@ -64,7 +64,7 @@ Menu principal
 while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
-    if int(inputs[0]) == 1:
+    if int(inputs[0]) == 1: 
         print("1 - ARRAY LIST \n2 - LINKED_LIST")
         tipo_artistas = int(input("Seleccione el tipo de representacion de la lista de artistas: "))
         tipo_obras = int(input("Seleccione el tipo de representacion de la lista de obras: "))
