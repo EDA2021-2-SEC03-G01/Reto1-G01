@@ -83,7 +83,8 @@ while True:
         año_fin = int(input("Ingrese el año final: "))
         (total, elapsed_time_mseg, artistas) = controller.req_1(catalog, año_in, año_fin, tipo_ord)
         print("Para mostrar estos datos el tiempo (mseg) fue: " + str(elapsed_time_mseg))
-        print("El numero de artistas en este rango es: " + str(total))
+        print("Hay " + str(total) + " artistas entre " + str(año_in) + " y " + str(año_fin))
+        print("A continuación se muestran los primeros y ultimos tres: ")
         print(artistas)
 
     elif int(inputs[0]) == 3:
@@ -91,9 +92,11 @@ while True:
         tipo_ord = int(input("Seleccione el tipo ordenamiento: "))
         fecha_in = (input("Ingrese la fecha inicial (YYYY-MM-DD): "))
         fecha_fin = (input("Ingrese la fecha final (YYYY-MM-DD): "))
-        (total,elapsed_time_mseg, obras) = controller.req_2(catalog, fecha_in, fecha_fin, tipo_ord)
+        (total, purchase, elapsed_time_mseg, obras) = controller.req_2(catalog, fecha_in, fecha_fin, tipo_ord)
         print("Para mostrar estos datos el tiempo (mseg) fue: " + str(elapsed_time_mseg))
-        print("El numero de obras en este rango es: " + str(total))
+        print("Fueron adquiridas " + str(total) + " obras entre " + str(fecha_in) + " y " + str(fecha_fin))
+        print(str(purchase) + " de estas fueron compradas. ")
+        print("A continuación se muestran las primeras y ultimas tres: ")
         print(obras)
     else:
         sys.exit(0)

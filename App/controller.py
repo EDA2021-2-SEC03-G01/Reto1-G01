@@ -78,5 +78,5 @@ def req_1(catalog, año_in, año_fin, tipo_ord):
     return (total, elapsed_time_mseg, lista)
 
 def req_2(catalog, fecha_in, fecha_fin, tipo_ord):
-    (total, elapsed_time_mseg, lista) = model.req_2(catalog, fecha_in, fecha_fin, tipo_ord)
-    return (total, elapsed_time_mseg, lista)
+    (total, purchase, elapsed_time_mseg, lista) = model.req_2(catalog, fecha_in, fecha_fin, tipo_ord)
+    return (total, purchase, elapsed_time_mseg, lista)

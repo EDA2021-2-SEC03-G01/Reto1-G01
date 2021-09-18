@@ -144,12 +144,14 @@ def req_1(catalog, año_in, año_fin, tipo_ord):
     total = 0
     artistas = catalog["artists"]
     for i in range(1, lt.size(artistas)+1) :
+    
         artista = lt.getElement(artistas, i)
         if int(artista["BeginDate"]) > int(año_in) and int(artista["BeginDate"]) < int(año_fin):
             dic_artist = {"nombre": artista["DisplayName"], "Fecha de nacimiento": artista["BeginDate"], 
             "Fecha de fallecimiento": artista["EndDate"],  "Nacionalidad": artista["Nationality"],  "Genero": artista["Gender"] }
             lt.addLast(lista, dic_artist)
             total += 1
+    #Medir tiempos
     if tipo_ord == 1:
         start_time = time.process_time()
         lista = sa.sort(lista, compareYears)
@@ -170,7 +172,7 @@ def req_1(catalog, año_in, año_fin, tipo_ord):
         lista = qs.sort(lista, compareYears)
         stop_time = time.process_time()
         elapsed_time_mseg = (stop_time - start_time)*1000
-
+    #Primeros y últimos tres
     lista_def = lt.newList()
     for pos in range(1, 4):
         artista = lt.getElement(lista, pos)
@@ -183,9 +185,11 @@ def req_1(catalog, año_in, año_fin, tipo_ord):
     return (total, elapsed_time_mseg, lista_def)
 
 def req_2(catalog, fecha_in, fecha_fin, tipo_ord):
-    lista = lt.newList()
+    lista = lt.newList(datastructure="ARRAY_LIST")
     total = 0
+    purchase = 0
     obras = catalog["artworks"]
+    artistas = catalog["artists"]
     for i in range(1, lt.size(obras)+1) :
         obra = lt.getElement(obras, i)
         if obra["DateAcquired"] != "":
@@ -194,10 +198,29 @@ def req_2(catalog, fecha_in, fecha_fin, tipo_ord):
             fecha_adq = date.fromisoformat("0001-01-01")
         fecha_ini = date.fromisoformat(fecha_in)
         fecha_final = date.fromisoformat(fecha_fin)
+        autores = lt.newList(datastructure="ARRAY_LIST")
         if fecha_adq > fecha_ini and fecha_adq < fecha_final:
-            dic_artwork = {"Titulo": obra["Title"], "Artistas": obra["ConstituentID"], "Fecha": obra["Date"], "Medio": obra["Medium"],  "Dimensiones": obra["Dimensions"], "Adquisicion": obra["DateAcquired"]  }
+            idprueba = ""
+            cadena = str(obra["ConstituentID"])
+            for j in range(1, len(cadena)):
+                if cadena[j] != "[" and cadena[j] != "," and cadena[j] != " " and cadena[j] != "]":
+                    idprueba += cadena[j]
+                elif cadena[j] == "," or cadena[j] == "]":
+                    seguir = True
+                    while seguir:
+                        for i in range(1, lt.size(artistas)+1):
+                            autor = lt.getElement(artistas, i)
+                            if int(idprueba) == int(autor["ConstituentID"]):
+                                lt.addLast(autores, autor["DisplayName"])
+                                
+                                seguir = False
+                    idprueba = ""
+            dic_artwork = {"Titulo": obra["Title"], "Artistas": autores, "Fecha": obra["Date"], "Medio": obra["Medium"],  "Dimensiones": obra["Dimensions"], "Adquisicion": obra["DateAcquired"]  }
             lt.addLast(lista, dic_artwork)
             total += 1
+            if obra["CreditLine"] == "Purchase":
+                purchase += 1       
+    #Medir tiempos
     if tipo_ord == 1:
         start_time = time.process_time()
         lista = sa.sort(lista, compareDateAcquired)
@@ -218,7 +241,7 @@ def req_2(catalog, fecha_in, fecha_fin, tipo_ord):
         lista = qs.sort(lista, compareDateAcquired)
         stop_time = time.process_time()
         elapsed_time_mseg = (stop_time - start_time)*1000
-
+    #Primeras y últimas tres
     lista_def = lt.newList()
     for pos in range(1, 4):
         artista = lt.getElement(lista, pos)
@@ -228,4 +251,4 @@ def req_2(catalog, fecha_in, fecha_fin, tipo_ord):
         if (largoLista - pos) < 3:
             artista = lt.getElement(lista, pos)
             lt.addLast(lista_def, artista)
-    return (total, elapsed_time_mseg, lista_def)
+    return (total, purchase, elapsed_time_mseg, lista_def)
