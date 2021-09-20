@@ -98,6 +98,16 @@ while True:
         print(str(purchase) + " de estas fueron compradas. ")
         print("A continuación se muestran las primeras y ultimas tres: ")
         print(obras)
+
+    elif int(inputs[0]) == 4:
+        artista=input("Ingrese el nombre del artista de interés:  ")
+        (total_obras, total_tecnicas, mas_utilizada, lista_obras) = controller.req_3(catalog, artista)
+        print(artista + " tiene un total de " + total_obras + " en el museo.")
+        print("Hay " + total_tecnicas + " tipos diferentes de medios/tecnicas en su colección.")
+        print("Su tecnica mas utilizada es " + mas_utilizada)
+        print("A continuación se muestran las obras en las que " + artista + "utilizó esta tecnica")
+        print(lista_obras)
+
     else:
         sys.exit(0)
 sys.exit(0)

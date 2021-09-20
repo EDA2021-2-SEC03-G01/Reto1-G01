@@ -1,4 +1,4 @@
-﻿"""
+"""
  * Copyright 2020, Departamento de sistemas y Computación,
  * Universidad de Los Andes
  *
@@ -33,6 +33,7 @@ from DISClib.Algorithms.Sorting import insertionsort as ins
 from DISClib.Algorithms.Sorting import mergesort as ms
 from DISClib.Algorithms.Sorting import quicksort as qs
 from datetime import date
+from statistics import mode 
 assert cf
 
 """
@@ -218,9 +219,6 @@ def req_2(catalog, fecha_in, fecha_fin, tipo_ord):
             dic_artwork = {"Titulo": obra["Title"], "Artistas": autores, "Fecha": obra["Date"], "Medio": obra["Medium"],  "Dimensiones": obra["Dimensions"], "Adquisicion": obra["DateAcquired"]  }
             lt.addLast(lista, dic_artwork)
             total += 1
-            if obra["CreditLine"] == "Purchase":
-                purchase += 1       
-    #Medir tiempos
     if tipo_ord == 1:
         start_time = time.process_time()
         lista = sa.sort(lista, compareDateAcquired)
@@ -252,3 +250,54 @@ def req_2(catalog, fecha_in, fecha_fin, tipo_ord):
             artista = lt.getElement(lista, pos)
             lt.addLast(lista_def, artista)
     return (total, purchase, elapsed_time_mseg, lista_def)
+
+def req_3(catalog, nom_artista):
+    artista=nom_artista
+    lista=lt.newList()
+    obras_tecnica = lt.newList(datastructure="ARRAY_LIST")
+    total_obras = 0
+    total_tecnicas = 0
+    mas_utilizada = ""
+    obras = catalog["artworks"]
+    artistas = catalog["artists"]
+    for i in range(1, lt.size(obras)+1) :
+        obra = lt.getElement(obras, i)
+        idprueba=""
+        cadena = str(obra["ConstituentID"])
+        autores = lt.newList(datastructure="ARRAY_LIST")
+        for j in range(1, len(cadena)):
+            if cadena[j] != "[" and cadena[j] != "," and cadena[j] != " " and cadena[j] != "]":
+                idprueba += cadena[j]
+            elif cadena[j] == "," or cadena[j] == "]":
+                seguir = True
+                while seguir:
+                    for i in range(1, lt.size(artistas)+1):
+                        autor = lt.getElement(artistas, i)
+                        if idprueba == autor["ConstituentID"]:
+                            lt.addLast(autores, autor["DisplayName"])
+                            seguir = False
+                    idprueba = ""
+        dic_artworks = {"Titulo": obra["Title"], "Artistas": autores, "Fecha": obra["Date"], "Medio": obra["Medium"],  "Dimensiones": obra["Dimensions"], "Adquisicion": obra["DateAcquired"]  }
+        lt.addLast(lista, dic_artworks)
+    for k in range(1,lt.size(lista)+1):
+        for l in range(1,lt.size((lista[k]["Artistas"])+1)):
+            if lista[k]["Artistas"][l] == artista:
+                total_obras=+1
+                lista_tecnicas=lt.newList()
+                lt.addLast(lista_tecnicas, lista[k]["Medio"])
+    mas_utilizada=mode(lista_tecnicas)
+    for m in range(1,lt.size(lista_tecnicas)+1):
+        lista_tecnicas_def=lt.newList()
+        if lista_tecnicas[m] not in lista_tecnicas_def:
+            lt.addLast(lista_tecnicas_def,lista_tecnicas[m])
+            total_tecnicas=+1
+    lista_obras=lt.newList()
+    for n in range(1, lt.size(lista)+1):
+        if artista in lista[n]["Artistas"] and lista[n]["Medio"]==mas_utilizada:
+            dic_obra={"Titulo": lista[n]["Titulo"], "Fecha": lista[n]["Fecha"], "Medio": lista[n]["Medio"], "Dimensiones": lista[n]["Dimensiones"]}
+            lt.addLast(lista_obras, dic_obra)
+    return (total_obras, total_tecnicas, mas_utilizada, lista_obras)
+
+
+
+

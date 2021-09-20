@@ -80,3 +80,7 @@ def req_1(catalog, año_in, año_fin, tipo_ord):
 def req_2(catalog, fecha_in, fecha_fin, tipo_ord):
     (total, purchase, elapsed_time_mseg, lista) = model.req_2(catalog, fecha_in, fecha_fin, tipo_ord)
     return (total, purchase, elapsed_time_mseg, lista)
+
+def req_3(catalog, artista):
+    (total_obras, total_tecnicas, mas_utilizada, lista_obras)=model.req_3(catalog, artista)
+    return (total_obras, total_tecnicas, mas_utilizada, lista_obras)
