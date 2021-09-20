@@ -16,6 +16,6 @@ Este directorio contiene todo el código de base que se entrega para el funciona
 -Test
 Este directorio contiene las pruebas realizadas a los TADs, Estructuras de Datos y Algoritmos.
 
-Req. 2 - Daniela Espinosa, 202022615, d.espinosaa@uniandes.edu.co
 Req. 3 - Tomás la Rotta, 202021354, t.la@uniandes.edu.co
+Req. 4 - Daniela Espinosa, 202022615, d.espinosaa@uniandes.edu.co
 
