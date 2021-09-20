@@ -84,3 +84,8 @@ def req_2(catalog, fecha_in, fecha_fin, tipo_ord):
 def req_3(catalog, artista):
     (total_obras, total_tecnicas, mas_utilizada, lista_obras)=model.req_3(catalog, artista)
     return (total_obras, total_tecnicas, mas_utilizada, lista_obras)
+
+def req_4(catalog):
+    (sorted_dict, lista_def, nac_mas, n_obras_nac_mas) = model.req_4(catalog)
+    return (sorted_dict, lista_def, nac_mas, n_obras_nac_mas)
+   

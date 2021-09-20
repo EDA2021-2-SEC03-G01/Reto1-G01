@@ -108,6 +108,13 @@ while True:
         print("A continuación se muestran las obras en las que " + artista + "utilizó esta tecnica")
         print(lista_obras)
 
+    elif int(inputs[0]) == 5:
+        (sorted_dict, lista_def, nac_mas, n_obras_nac_mas) = controller.req_4(catalog)
+        print("El Top 10 de nacionalidades en el MoMA es: " + str(sorted_dict))
+        print("La nacionalidad más frecuente en el MoMA es " + (nac_mas) + " con " + str(n_obras_nac_mas) + " obras.")
+        print("A continuación se muestran las primeras y ultimas tres: ")
+        print(lista_def)
+
     else:
         sys.exit(0)
 sys.exit(0)
