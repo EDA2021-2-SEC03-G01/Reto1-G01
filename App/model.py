@@ -138,6 +138,46 @@ def sortArtists(catalog, tipo_ord):
 def sortArtworks(catalog):
     return sa.sort(catalog['artworks'], compareDateAcquired)
 
+
+#Encontrar primeros y ultimos 3 de una lista
+def primeros_ultimos(lista):
+    lista_def = lt.newList()
+    for pos in range(1, 4):
+        element = lt.getElement(lista, pos)
+        lt.addLast(lista_def, element)
+    largoLista = int(lt.size(lista))
+    for pos in range(1, largoLista + 1):
+        if (largoLista - pos) < 3:
+            element = lt.getElement(lista, pos)
+            lt.addLast(lista_def, element)
+    return lista_def
+
+#Medición de tiempos
+def tiempo_ord_sa (lista, compare):
+    start_time = time.process_time()
+    lista = sa.sort(lista, compare)
+    stop_time = time.process_time()
+    return (stop_time - start_time)*1000
+
+def tiempo_ord_ins (lista, compare):
+    start_time = time.process_time()
+    lista = ins.sort(lista, compare)
+    stop_time = time.process_time()
+    return (stop_time - start_time)*1000
+
+def tiempo_ord_ms (lista, compare):
+    start_time = time.process_time()
+    lista = ms.sort(lista, compare)
+    stop_time = time.process_time()
+    return (stop_time - start_time)*1000
+
+def tiempo_ord_qs (lista, compare):
+    start_time = time.process_time()
+    lista = qs.sort(lista, compare)
+    stop_time = time.process_time()
+    return (stop_time - start_time)*1000
+
+
 # Requerimientos 
 
 def req_1(catalog, año_in, año_fin, tipo_ord):
@@ -154,37 +194,16 @@ def req_1(catalog, año_in, año_fin, tipo_ord):
             total += 1
     #Medir tiempos
     if tipo_ord == 1:
-        start_time = time.process_time()
-        lista = sa.sort(lista, compareYears)
-        stop_time = time.process_time()
-        elapsed_time_mseg = (stop_time - start_time)*1000
+        elapsed_time_mseg = tiempo_ord_sa (lista, compareYears)
     elif tipo_ord == 2:
-        start_time = time.process_time()
-        lista = ins.sort(lista, compareYears)
-        stop_time = time.process_time()
-        elapsed_time_mseg = (stop_time - start_time)*1000
+        elapsed_time_mseg = tiempo_ord_ins (lista, compareYears)
     elif tipo_ord == 3:
-        start_time = time.process_time()
-        lista = ms.sort(lista, compareYears)
-        stop_time = time.process_time()
-        elapsed_time_mseg = (stop_time - start_time)*1000
+        elapsed_time_mseg = tiempo_ord_ms (lista, compareYears)
     else:
-        start_time = time.process_time()
-        lista = qs.sort(lista, compareYears)
-        stop_time = time.process_time()
-        elapsed_time_mseg = (stop_time - start_time)*1000
+        elapsed_time_mseg = tiempo_ord_qs (lista, compareYears)
     #Primeros y últimos tres
-    lista_def = lt.newList()
-    for pos in range(1, 4):
-        artista = lt.getElement(lista, pos)
-        lt.addLast(lista_def, artista)
-    largoLista = int(lt.size(lista))
-    for pos in range(1, largoLista + 1):
-        if (largoLista - pos) < 3:
-            artista = lt.getElement(lista, pos)
-            lt.addLast(lista_def, artista)
+    lista_def = primeros_ultimos(lista)
     return (total, elapsed_time_mseg, lista_def)
-
 
 #Encontrar los nombres de los autores
 def nombres_autores(artistas, obra):
@@ -231,35 +250,15 @@ def req_2(catalog, fecha_in, fecha_fin, tipo_ord):
                 purchase += 1       
     #Medir tiempos
     if tipo_ord == 1:
-        start_time = time.process_time()
-        lista = sa.sort(lista, compareDateAcquired)
-        stop_time = time.process_time()
-        elapsed_time_mseg = (stop_time - start_time)*1000
+        elapsed_time_mseg = tiempo_ord_sa (lista, compareDateAcquired)
     elif tipo_ord == 2:
-        start_time = time.process_time()
-        lista = ins.sort(lista, compareDateAcquired)
-        stop_time = time.process_time()
-        elapsed_time_mseg = (stop_time - start_time)*1000
+        elapsed_time_mseg = tiempo_ord_ins (lista, compareDateAcquired)
     elif tipo_ord == 3:
-        start_time = time.process_time()
-        lista = ms.sort(lista, compareDateAcquired)
-        stop_time = time.process_time()
-        elapsed_time_mseg = (stop_time - start_time)*1000
+        elapsed_time_mseg = tiempo_ord_ms (lista, compareDateAcquired)
     else:
-        start_time = time.process_time()
-        lista = qs.sort(lista, compareDateAcquired)
-        stop_time = time.process_time()
-        elapsed_time_mseg = (stop_time - start_time)*1000
-    #Primeras y últimas tres
-    lista_def = lt.newList()
-    for pos in range(1, 4):
-        artista = lt.getElement(lista, pos)
-        lt.addLast(lista_def, artista)
-    largoLista = int(lt.size(lista))
-    for pos in range(1, largoLista + 1):
-        if (largoLista - pos) < 3:
-            artista = lt.getElement(lista, pos)
-            lt.addLast(lista_def, artista)
+        elapsed_time_mseg = tiempo_ord_qs (lista, compareDateAcquired)
+    #Primeros y últimos tres
+    lista_def = primeros_ultimos(lista)
     return (total, purchase, elapsed_time_mseg, lista_def)
 
 
@@ -337,30 +336,20 @@ def req_4(catalog):
     dic_nac = {}
     for o in range(1, lt.size(obras)+1):
         obra = lt.getElement(obras, o)
-        idprueba = ""
-        cadena = str(obra["ConstituentID"])
-        for j in range(1, len(cadena)):
-            if cadena[j] != "[" and cadena[j] != "," and cadena[j] != " " and cadena[j] != "]":
-                idprueba += cadena[j]
-            elif cadena[j] == "," or cadena[j] == "]":
-                seguir = True
-                while seguir:
-                    for a in range(1, lt.size(artistas)+1):
-                        autor = lt.getElement(artistas, a)
-                        if int(idprueba) == int(autor["ConstituentID"]):
-                            seguir = False
-                            if lt.isPresent(solo_nac, autor["Nationality"]) == 0:
-                                nacionalidad = autor["Nationality"]
-                                lt.addLast(solo_nac, nacionalidad)
-                                dic_nac[nacionalidad] = 1
-                                if autor["Nationality"] == "":
-                                    dic_nac["Nationality unknown"] += 1
-                            else:
-                                if autor["Nationality"] == "":
-                                    dic_nac["Nationality unknown"] += 1
-                                else:
-                                    dic_nac[autor["Nationality"]] += 1
-                idprueba = ""
+        nacs = nac_autores(artistas, obra)
+        for n in range(1, lt.size(nacs)+1):
+            nac = lt.getElement(nacs, n)
+            if lt.isPresent(solo_nac, nac) == 0:
+                nacionalidad = nac
+                lt.addLast(solo_nac, nacionalidad)
+                dic_nac[nacionalidad] = 1
+                if nac == "":
+                    dic_nac["Nationality unknown"] += 1
+            else:
+                if nac == "":
+                    dic_nac["Nationality unknown"] += 1
+                else:
+                    dic_nac[nac] += 1
     sorted_values = sorted(dic_nac.values(), reverse=True)
     sorted_dict = {}
     for i in sorted_values:
@@ -373,18 +362,10 @@ def req_4(catalog):
     nac_mas = list(sorted_dict.keys())[0]
     for o in range(1, lt.size(obras)+1):
         obra = lt.getElement(obras, o)
-        nacionalidades = nac_autores(artistas, obra)
-        if lt.isPresent(nacionalidades, nac_mas) != 0:
+        nacs = nac_autores(artistas, obra)
+        if lt.isPresent(nacs, nac_mas) != 0:
             lt.addLast(obras_nac_mas, obra)
     n_obras_nac_mas = lt.size(obras_nac_mas)
     #Primeras y últimas tres
-    lista_def = lt.newList()
-    for pos in range(1, 4):
-        artista = lt.getElement(obras_nac_mas, pos)
-        lt.addLast(lista_def, artista)
-    largoLista = int(lt.size(obras_nac_mas))
-    for pos in range(1, largoLista + 1):
-        if (largoLista - pos) < 3:
-            artista = lt.getElement(obras_nac_mas, pos)
-            lt.addLast(lista_def, artista)
+    lista_def = lista_def = primeros_ultimos(obras_nac_mas)
     return (sorted_dict, lista_def, nac_mas, n_obras_nac_mas)
