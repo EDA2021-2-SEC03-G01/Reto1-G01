@@ -56,12 +56,6 @@ def loadArtworks(catalog):
 
 # Funciones de ordenamiento
 
-def sortArtists(catalog, tipo_ord): 
-    model.sortArtists(catalog, tipo_ord)
-
-def sortArtworks(catalog): 
-    model.sortArtworks(catalog)
-
 # Funciones de consulta sobre el catálogo
 
 def getLastArtists(catalog):
@@ -88,4 +82,7 @@ def req_3(catalog, artista):
 def req_4(catalog):
     (sorted_dict, lista_def, nac_mas, n_obras_nac_mas) = model.req_4(catalog)
     return (sorted_dict, lista_def, nac_mas, n_obras_nac_mas)
-   
+
+def req_5(catalog, dep):
+    (total_obras, costo_tot, peso_tot, lista_def) = model.req_5(catalog, dep)
+    return (total_obras, costo_tot, peso_tot, lista_def)

@@ -130,29 +130,28 @@ def compareDateAcquired(obra1, obra2):
     else:
         return False
 
+def compareDate(obra1, obra2):
+    if int(obra1["Fecha"]) <= int(obra2["Fecha"]):
+        return True
+    else:
+        return False
+
 # Funciones de ordenamiento
 
-def sortArtists(catalog, tipo_ord):
-    return tipo_ord.sort(catalog['artists'], compareYears)
-
-def sortArtworks(catalog):
-    return sa.sort(catalog['artworks'], compareDateAcquired)
-
-
-#Encontrar primeros y ultimos 3 de una lista
-def primeros_ultimos(lista):
+#Encontrar los n primeros y ultimos de una lista
+def primeros_ultimos(lista, n):
     lista_def = lt.newList()
-    for pos in range(1, 4):
+    for pos in range(1, n+1):
         element = lt.getElement(lista, pos)
         lt.addLast(lista_def, element)
     largoLista = int(lt.size(lista))
     for pos in range(1, largoLista + 1):
-        if (largoLista - pos) < 3:
+        if (largoLista - pos) < n:
             element = lt.getElement(lista, pos)
             lt.addLast(lista_def, element)
     return lista_def
 
-#Medición de tiempos
+#Medición de tiempos de ordenamiento
 def tiempo_ord_sa (lista, compare):
     start_time = time.process_time()
     lista = sa.sort(lista, compare)
@@ -202,7 +201,7 @@ def req_1(catalog, año_in, año_fin, tipo_ord):
     else:
         elapsed_time_mseg = tiempo_ord_qs (lista, compareYears)
     #Primeros y últimos tres
-    lista_def = primeros_ultimos(lista)
+    lista_def = primeros_ultimos(lista, 3)
     return (total, elapsed_time_mseg, lista_def)
 
 #Encontrar los nombres de los autores
@@ -238,7 +237,6 @@ def req_2(catalog, fecha_in, fecha_fin, tipo_ord):
             fecha_adq = date.fromisoformat("0001-01-01")
         fecha_ini = date.fromisoformat(fecha_in)
         fecha_final = date.fromisoformat(fecha_fin)
-        autores = lt.newList(datastructure="ARRAY_LIST")
         if fecha_adq > fecha_ini and fecha_adq < fecha_final:
             #Encontrar los nombres de los autores
             autores = nombres_autores(artistas, obra)
@@ -258,7 +256,7 @@ def req_2(catalog, fecha_in, fecha_fin, tipo_ord):
     else:
         elapsed_time_mseg = tiempo_ord_qs (lista, compareDateAcquired)
     #Primeros y últimos tres
-    lista_def = primeros_ultimos(lista)
+    lista_def = primeros_ultimos(lista, 3)
     return (total, purchase, elapsed_time_mseg, lista_def)
 
 
@@ -352,5 +350,58 @@ def req_4(catalog):
             lt.addLast(obras_nac_mas, obra)
     n_obras_nac_mas = lt.size(obras_nac_mas)
     #Primeras y últimas tres
-    lista_def = lista_def = primeros_ultimos(obras_nac_mas)
+    lista_def = lista_def = primeros_ultimos(obras_nac_mas, 3)
     return (sorted_dict, lista_def, nac_mas, n_obras_nac_mas)
+
+def req_5(catalog, dep):
+    obras = catalog["artworks"]
+    artistas = catalog["artists"]
+    costo_kg = 0
+    costo_m2 = 0
+    costo_m3 = 0
+    costo_tot = 0 
+    peso_tot = 0
+    tasa = 72.00
+    total_obras = 0
+    obras_transp = lt.newList(datastructure="ARRAY_LIST")
+    for o in range(1, lt.size(obras)+1):
+        obra = lt.getElement(obras, o)
+        if obra["Department"] == dep:
+            peso = obra["Weight (kg)"]
+            diametro = obra["Diameter (cm)"]
+            circum = obra["Circumference (cm)"]
+            largo = obra["Length (cm)"] #largo de un hilo
+            alto = obra["Height (cm)"]
+            ancho = obra["Width (cm)"] #largo de un cuadro
+            prof = obra["Depth (cm)"]
+            if peso != "":
+                costo_kg = float(peso) * tasa
+                peso_tot += peso
+            if  alto != "" and ancho != "" and prof != "":
+                costo_m3 = float(alto)*0.01 * float(ancho)*0.01 * float(prof)*0.01 * tasa
+            elif alto != "" and ancho != "":
+                costo_m2 = float(alto)*0.01 *float(ancho)*0.01  * tasa
+            elif largo != "" and ancho != "":
+                costo_m2 = float(largo)*0.01 *float(ancho)*0.01  * tasa
+            elif ancho != "" and prof != "":
+                costo_m2 = float(ancho)*0.01 *float(prof)*0.01  * tasa
+            elif diametro != "" and alto != "":
+                costo_m2 = ((float(diametro)*0.01)/2) * ((float(alto)*0.01)/2) * 3,14 * tasa
+            elif diametro != "":
+                costo_m2 = (((float(diametro)*0.01)/2)**2) * 3,14 * tasa
+            elif circum  != "":
+                costo_m2 = ((float(circum)*0.01)**2)/(4*3,14) * tasa
+            costo_def = max(costo_kg, costo_m2, costo_m3)
+            if costo_def == 0:
+                costo_def == 48.00
+            costo_tot += costo_def
+            total_obras += 1
+            autores = nombres_autores(artistas, obra)
+            if (obra["Date"]) == "":
+                obra["Date"] = 0
+            dic_artwork = {"Titulo": obra["Title"], "Artistas": autores, "Clasificacion":obra["Classification"], "Fecha": obra["Date"], "Medio": obra["Medium"],  "Dimensiones": obra["Dimensions"], "Costo transporte":costo_def}
+            lt.addLast(obras_transp, dic_artwork)
+    obras_transp = sa.sort(obras_transp, compareDate)
+    #Primeras y ultimas cinco
+    lista_def = primeros_ultimos(obras_transp, 5)
+    return (total_obras, costo_tot, peso_tot, lista_def)

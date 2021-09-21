@@ -41,6 +41,7 @@ def printMenu():
     print("3- Ordenar cronológicamente las adquisiciones")
     print("4- Clasificar las obras de un artista por su técnica")
     print("5- Clasificar las obras por la nacionalidad de sus creadores")
+    print("6- Transportar obras de un departamento")
     print("0- Salir")
 
 def initCatalog(tipo_artistas, tipo_obras):
@@ -114,8 +115,14 @@ while True:
         print("La nacionalidad más frecuente en el MoMA es " + (nac_mas) + " con " + str(n_obras_nac_mas) + " obras.")
         print("A continuación se muestran las primeras y ultimas tres: ")
         print(lista_def)
-
+    
+    elif int(inputs[0]) == 6:
+        dep = input("Ingrese el departamento del que desea transportar las obras: ")
+        (total_obras, costo_tot, peso_tot, lista_def) = controller.req_5(catalog, dep)
+        print(str(costo_tot))
+        print(str(total_obras))
     else:
         sys.exit(0)
 sys.exit(0)
 
+#Drawings & Prints
