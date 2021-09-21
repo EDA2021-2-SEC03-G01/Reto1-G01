@@ -273,21 +273,7 @@ def req_3(catalog, nom_artista):
     artistas = catalog["artists"]
     for i in range(1, lt.size(obras)+1) :
         obra = lt.getElement(obras, i)
-        idprueba=""
-        cadena = str(obra["ConstituentID"])
-        autores = lt.newList(datastructure="ARRAY_LIST")
-        for j in range(1, len(cadena)):
-            if cadena[j] != "[" and cadena[j] != "," and cadena[j] != " " and cadena[j] != "]":
-                idprueba += cadena[j]
-            elif cadena[j] == "," or cadena[j] == "]":
-                seguir = True
-                while seguir:
-                    for i in range(1, lt.size(artistas)+1):
-                        autor = lt.getElement(artistas, i)
-                        if idprueba == autor["ConstituentID"]:
-                            lt.addLast(autores, autor["DisplayName"])
-                            seguir = False
-                    idprueba = ""
+        autores = nombres_autores(artistas, obra)
         dic_artworks = {"Titulo": obra["Title"], "Artistas": autores, "Fecha": obra["Date"], "Medio": obra["Medium"],  "Dimensiones": obra["Dimensions"], "Adquisicion": obra["DateAcquired"]  }
         lt.addLast(lista, dic_artworks)
     for k in range(1,lt.size(lista)+1):
@@ -302,12 +288,11 @@ def req_3(catalog, nom_artista):
         if lista_tecnicas[m] not in lista_tecnicas_def:
             lt.addLast(lista_tecnicas_def,lista_tecnicas[m])
             total_tecnicas=+1
-    lista_obras=lt.newList()
     for n in range(1, lt.size(lista)+1):
         if artista in lista[n]["Artistas"] and lista[n]["Medio"]==mas_utilizada:
             dic_obra={"Titulo": lista[n]["Titulo"], "Fecha": lista[n]["Fecha"], "Medio": lista[n]["Medio"], "Dimensiones": lista[n]["Dimensiones"]}
-            lt.addLast(lista_obras, dic_obra)
-    return (total_obras, total_tecnicas, mas_utilizada, lista_obras)
+            lt.addLast(obras_tecnica, dic_obra)
+    return (total_obras, total_tecnicas, mas_utilizada, obras_tecnica)
 
 #Encontrar las nacionalidades de los autores
 def nac_autores(artistas, obra):
