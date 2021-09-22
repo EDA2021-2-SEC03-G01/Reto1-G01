@@ -449,3 +449,53 @@ def req_5(catalog, dep):
         lt.addLast(obras_costos_def, obra)
 
     return (total_obras, costo_tot, peso_tot, lista_transp_def, obras_costos_def)
+
+def req_6(catalog, ano_ini, ano_fin, Area_disp ):
+    tot_obras_anos=0
+    tot_obras=0
+    Area_usada=0
+    obras_usadas=lt.newList(datastructure="ARRAY_LIST")
+    obras = catalog["artworks"]
+    artistas=catalog["artists"]
+    for i in range(1,lt.size(obras)+1):
+        obra=lt.getElement(obras,i)
+        if obra["DateAcquired"] != "":
+            fecha_adq = date.fromisoformat(obra["DateAcquired"])
+        else:
+            fecha_adq = date.fromisoformat("0001-01-01")
+        fecha_ini = date.fromisoformat(ano_ini + "-01-01")
+        fecha_final = date.fromisoformat(ano_fin + "-12-31")
+        if fecha_adq < fecha_final and fecha_adq > fecha_ini:
+            tot_obras_anos=+1
+            diametro = obra["Diameter (cm)"]
+            circum = obra["Circumference (cm)"]
+            largo = obra["Length (cm)"] 
+            alto = obra["Height (cm)"]
+            ancho = obra["Width (cm)"]
+            prof = obra["Depth (cm)"]
+            while Area_usada<Area_disp:
+                if alto != "" and ancho != "":
+                    Area_usada =+ (float(alto)*0.01 *float(ancho)*0.01)
+                elif alto != "" and largo != "":
+                    Area_usada =+ (float(alto)*0.01 *float(largo)*0.01) 
+                elif alto != "" and prof != "":
+                    Area_usada =+ (float(alto)*0.01 *float(prof)*0.01)
+                elif ancho != "" and largo != "":
+                    Area_usada =+ (float(ancho)*0.01 *float(largo)*0.01)
+                elif ancho != "" and prof != "":
+                    Area_usada =+ (float(ancho)*0.01 *float(prof)*0.01)
+                elif largo != "" and prof != "":
+                    Area_usada =+ (float(largo)*0.01 *float(prof)*0.01)
+                elif diametro != "":
+                    Area_usada =+ ((((float(diametro)*0.01)/2)**2) * 3,14)
+                elif circum  != "":
+                    Area_usada =+ (((float(circum)*0.01)**2)/(4 * 3,14))
+                tot_obras =+ 1
+                autores = nombres_autores(artistas, obra)
+                dic_obra={"Titulo":obra["Title"], "Artista(s)":autores, "Fecha":obra["Date"], "Clasificacion":obra["Classification"], "Medio":obra["Medium"], "Dimensiones":obra["Dimensions"], "Adquisicion":obra["Date_Acquired"]}
+                lt.addLast(obras_usadas, dic_obra)
+    obras_ord=sa.sort(obras_usadas,compareDateAcquired)
+    prim_ult_5=primeros_ultimos(obras_ord, 5)
+    return (tot_obras_anos, tot_obras, Area_usada, prim_ult_5)
+
+

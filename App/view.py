@@ -42,6 +42,7 @@ def printMenu():
     print("4- Clasificar las obras de un artista por su técnica")
     print("5- Clasificar las obras por la nacionalidad de sus creadores")
     print("6- Transportar obras de un departamento")
+    print("7- Proponer una nueva exposicion en el museo")
     print("0- Salir")
 
 def initCatalog(tipo_artistas, tipo_obras):
@@ -128,7 +129,20 @@ while True:
         print("Las cinco obras más costosas por transportar son: ")
         for obra in lt.iterator(obras_costos_def):
             print(obra)
-        
+    
+    elif int(inputs[0]) == 7:
+        ano_ini=input("Ingrese el año inicial de su busqueda: ")
+        ano_fin=input("Ingrese el año final de su busqueda: ")
+        Area_disp=input("Ingrese el area disponible: ")
+        (tot_obras_anos, tot_obras, Area_usada, prim_ult_5)= controller.req_6(catalog, ano_ini, ano_fin, Area_disp)
+        print("El MoMA va a exhibir obras desde " + ano_ini + " hasta " + ano_fin)
+        print("Hay " + tot_obras_anos + "obras posibles en un area de " + Area_disp + " m^2")
+        print("De las cuales " + tot_obras + "fue posible ubicarlas")
+        print("Llenando " + Area_usada + " m^2")
+        print("A continuación las primeras y ultimas 5 obras ubicadas en este area")
+        for obra in lt.iterator(prim_ult_5):
+            print(obra)
+
     else:
         sys.exit(0)
 sys.exit(0)

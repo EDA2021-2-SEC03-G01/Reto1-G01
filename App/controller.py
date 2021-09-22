@@ -86,3 +86,7 @@ def req_4(catalog):
 def req_5(catalog, dep):
     (total_obras, costo_tot, peso_tot, lista_transp_def, obras_costos_def) = model.req_5(catalog, dep)
     return (total_obras, costo_tot, peso_tot, lista_transp_def, obras_costos_def)
+
+def req_6(catalog, ano_ini, ano_fin, Area_disp):
+    (tot_obras_anos, tot_obras, Area_usada, prim_ult_5)= model.req_6(catalog, ano_ini, ano_fin, Area_disp)
+    return (tot_obras_anos, tot_obras, Area_usada, prim_ult_5)
