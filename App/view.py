@@ -118,9 +118,17 @@ while True:
     
     elif int(inputs[0]) == 6:
         dep = input("Ingrese el departamento del que desea transportar las obras: ")
-        (total_obras, costo_tot, peso_tot, lista_def) = controller.req_5(catalog, dep)
-        print(str(costo_tot))
-        print(str(total_obras))
+        (total_obras, costo_tot, peso_tot, lista_transp_def, obras_costos_def) = controller.req_5(catalog, dep)
+        print("El costo por transportar las obras del departamento " + dep + " fue: " + str(costo_tot))
+        print("El numero total de obras por transportar es " + str(total_obras))
+        print("El peso total de las obras es de: " + str(peso_tot))
+        print("Las cinco obras más antiguas por transportar son: ")
+        for obra in lt.iterator(lista_transp_def):
+            print(obra)
+        print("Las cinco obras más costosas por transportar son: ")
+        for obra in lt.iterator(obras_costos_def):
+            print(obra)
+        
     else:
         sys.exit(0)
 sys.exit(0)

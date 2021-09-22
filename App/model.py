@@ -136,6 +136,12 @@ def compareDate(obra1, obra2):
     else:
         return False
 
+def compareCosto(obra1, obra2):
+    if float(obra1["Costo transporte"]) >= float(obra2["Costo transporte"]):
+        return True
+    else:
+        return False
+
 # Funciones de ordenamiento
 
 #Encontrar los n primeros y ultimos de una lista
@@ -350,58 +356,96 @@ def req_4(catalog):
             lt.addLast(obras_nac_mas, obra)
     n_obras_nac_mas = lt.size(obras_nac_mas)
     #Primeras y últimas tres
-    lista_def = lista_def = primeros_ultimos(obras_nac_mas, 3)
+    lista_def = primeros_ultimos(obras_nac_mas, 3)
     return (sorted_dict, lista_def, nac_mas, n_obras_nac_mas)
 
 def req_5(catalog, dep):
     obras = catalog["artworks"]
     artistas = catalog["artists"]
-    costo_kg = 0
-    costo_m2 = 0
-    costo_m3 = 0
-    costo_tot = 0 
-    peso_tot = 0
+    costo_kg = 0.0
+    costo_m2 = 0.0
+    costo_m3 = 0.0
+    costo_tot = 0.0
+    peso_tot = 0.0
     tasa = 72.00
     total_obras = 0
+    costo_def = 0.0
     obras_transp = lt.newList(datastructure="ARRAY_LIST")
+    obras_costos = lt.newList(datastructure="ARRAY_LIST")
     for o in range(1, lt.size(obras)+1):
         obra = lt.getElement(obras, o)
         if obra["Department"] == dep:
             peso = obra["Weight (kg)"]
             diametro = obra["Diameter (cm)"]
             circum = obra["Circumference (cm)"]
-            largo = obra["Length (cm)"] #largo de un hilo
+            largo = obra["Length (cm)"] 
             alto = obra["Height (cm)"]
-            ancho = obra["Width (cm)"] #largo de un cuadro
+            ancho = obra["Width (cm)"]
             prof = obra["Depth (cm)"]
+
+            #KG
             if peso != "":
                 costo_kg = float(peso) * tasa
                 peso_tot += peso
+
+            #M2
+            if alto != "" and ancho != "":
+                costo_m2 = (float(alto)*0.01 *float(ancho)*0.01) * tasa
+            elif alto != "" and largo != "":
+                costo_m2 = (float(alto)*0.01 *float(largo)*0.01)  * tasa
+            elif alto != "" and prof != "":
+                costo_m2 = (float(alto)*0.01 *float(prof)*0.01)  * tasa
+            elif ancho != "" and largo != "":
+                costo_m2 = (float(ancho)*0.01 *float(largo)*0.01)  * tasa
+            elif ancho != "" and prof != "":
+                costo_m2 = (float(ancho)*0.01 *float(prof)*0.01)  * tasa
+            elif largo != "" and prof != "":
+                costo_m2 = (float(largo)*0.01 *float(prof)*0.01)  * tasa
+            elif diametro != "":
+                costo_m2 = ((((float(diametro)*0.01)/2)**2) * 3,14) * tasa
+            elif circum  != "":
+                costo_m2 = (((float(circum)*0.01)**2)/(4 * 3,14)) * tasa
+            
+            #M3
             if  alto != "" and ancho != "" and prof != "":
                 costo_m3 = float(alto)*0.01 * float(ancho)*0.01 * float(prof)*0.01 * tasa
-            elif alto != "" and ancho != "":
-                costo_m2 = float(alto)*0.01 *float(ancho)*0.01  * tasa
-            elif largo != "" and ancho != "":
-                costo_m2 = float(largo)*0.01 *float(ancho)*0.01  * tasa
-            elif ancho != "" and prof != "":
-                costo_m2 = float(ancho)*0.01 *float(prof)*0.01  * tasa
+            elif  alto != "" and ancho != "" and largo != "":
+                costo_m3 = float(alto)*0.01 * float(ancho)*0.01 * float(largo)*0.01 * tasa
+            elif  alto != "" and prof != "" and largo != "":
+                costo_m3 = float(alto)*0.01 * float(prof)*0.01 * float(largo)*0.01 * tasa
+            elif  ancho != "" and prof != "" and largo != "":
+                costo_m3 = float(ancho)*0.01 * float(prof)*0.01 * float(largo)*0.01 * tasa
             elif diametro != "" and alto != "":
-                costo_m2 = ((float(diametro)*0.01)/2) * ((float(alto)*0.01)/2) * 3,14 * tasa
-            elif diametro != "":
-                costo_m2 = (((float(diametro)*0.01)/2)**2) * 3,14 * tasa
-            elif circum  != "":
-                costo_m2 = ((float(circum)*0.01)**2)/(4*3,14) * tasa
+                costo_m3 = (((float(diametro)*0.01)/2)**2) * 3,14 * float(alto) * tasa
+            elif diametro != "" and ancho != "":
+                costo_m3 = (((float(diametro)*0.01)/2)**2) * 3,14 * float(ancho) * tasa
+            elif diametro != "" and prof != "":
+                costo_m3 = (((float(diametro)*0.01)/2)**2) * 3,14 * float(prof) * tasa
+            elif diametro != "" and largo != "":
+                costo_m3 = (((float(diametro)*0.01)/2)**2) * 3,14 * float(largo) * tasa
+
             costo_def = max(costo_kg, costo_m2, costo_m3)
-            if costo_def == 0:
-                costo_def == 48.00
+            if costo_def == 0.0:
+                costo_def = 48.00
             costo_tot += costo_def
             total_obras += 1
             autores = nombres_autores(artistas, obra)
             if (obra["Date"]) == "":
-                obra["Date"] = 0
+                obra["Date"] = 3000
             dic_artwork = {"Titulo": obra["Title"], "Artistas": autores, "Clasificacion":obra["Classification"], "Fecha": obra["Date"], "Medio": obra["Medium"],  "Dimensiones": obra["Dimensions"], "Costo transporte":costo_def}
             lt.addLast(obras_transp, dic_artwork)
+            lt.addLast(obras_costos, dic_artwork)
     obras_transp = sa.sort(obras_transp, compareDate)
-    #Primeras y ultimas cinco
-    lista_def = primeros_ultimos(obras_transp, 5)
-    return (total_obras, costo_tot, peso_tot, lista_def)
+    obras_costos = sa.sort(obras_costos, compareCosto)
+    #cinco más viejas
+    lista_transp_def = lt.newList()
+    for pos in range(1, 6):
+        obra = lt.getElement(obras_transp, pos)
+        lt.addLast(lista_transp_def, obra)
+    #cinco más caras
+    obras_costos_def = lt.newList()
+    for pos in range(1, 6):
+        obra = lt.getElement(obras_costos, pos)
+        lt.addLast(obras_costos_def, obra)
+
+    return (total_obras, costo_tot, peso_tot, lista_transp_def, obras_costos_def)

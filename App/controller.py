@@ -84,5 +84,5 @@ def req_4(catalog):
     return (sorted_dict, lista_def, nac_mas, n_obras_nac_mas)
 
 def req_5(catalog, dep):
-    (total_obras, costo_tot, peso_tot, lista_def) = model.req_5(catalog, dep)
-    return (total_obras, costo_tot, peso_tot, lista_def)
+    (total_obras, costo_tot, peso_tot, lista_transp_def, obras_costos_def) = model.req_5(catalog, dep)
+    return (total_obras, costo_tot, peso_tot, lista_transp_def, obras_costos_def)
