@@ -68,25 +68,25 @@ def getLastArtworks(catalog):
 
 #Requerimientos
 def req_1(catalog, año_in, año_fin, tipo_ord):
-    (total,elapsed_time_mseg, lista) = model.req_1(catalog, año_in, año_fin, tipo_ord)
-    return (total, elapsed_time_mseg, lista)
+    (total,elapsed_time_mseg, tiempo_req, lista) = model.req_1(catalog, año_in, año_fin, tipo_ord)
+    return (total, elapsed_time_mseg, tiempo_req, lista)
 
 def req_2(catalog, fecha_in, fecha_fin, tipo_ord):
-    (total, purchase, elapsed_time_mseg, lista) = model.req_2(catalog, fecha_in, fecha_fin, tipo_ord)
-    return (total, purchase, elapsed_time_mseg, lista)
+    (total, purchase, elapsed_time_mseg, tiempo_req, lista) = model.req_2(catalog, fecha_in, fecha_fin, tipo_ord)
+    return (total, purchase, elapsed_time_mseg, tiempo_req, lista)
 
 def req_3(catalog, artista):
-    (total_obras, total_tecnicas, mas_utilizada, lista_obras)=model.req_3(catalog, artista)
-    return (total_obras, total_tecnicas, mas_utilizada, lista_obras)
+    (total_obras, total_tecnicas, mas_utilizada, tiempo_req, lista_obras)=model.req_3(catalog, artista)
+    return (total_obras, total_tecnicas, mas_utilizada, tiempo_req, lista_obras)
 
 def req_4(catalog):
-    (sorted_dict, lista_def, nac_mas, n_obras_nac_mas) = model.req_4(catalog)
-    return (sorted_dict, lista_def, nac_mas, n_obras_nac_mas)
+    (sorted_dict, lista_def, nac_mas, tiempo_req, n_obras_nac_mas) = model.req_4(catalog)
+    return (sorted_dict, lista_def, nac_mas, tiempo_req, n_obras_nac_mas)
 
 def req_5(catalog, dep):
-    (total_obras, costo_tot, peso_tot, lista_transp_def, obras_costos_def) = model.req_5(catalog, dep)
-    return (total_obras, costo_tot, peso_tot, lista_transp_def, obras_costos_def)
+    (total_obras, costo_tot, peso_tot, lista_transp_def, tiempo_req, obras_costos_def) = model.req_5(catalog, dep)
+    return (total_obras, costo_tot, peso_tot, lista_transp_def, tiempo_req, obras_costos_def)
 
 def req_6(catalog, ano_ini, ano_fin, Area_disp):
-    (tot_obras_anos, tot_obras, Area_usada, prim_ult_5)= model.req_6(catalog, ano_ini, ano_fin, Area_disp)
-    return (tot_obras_anos, tot_obras, Area_usada, prim_ult_5)
+    (tot_obras_anos, tot_obras, Area_usada, tiempo_req, prim_ult_5)= model.req_6(catalog, ano_ini, ano_fin, Area_disp)
+    return (tot_obras_anos, tot_obras, Area_usada, tiempo_req, prim_ult_5)

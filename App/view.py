@@ -83,43 +83,47 @@ while True:
         tipo_ord = int(input("Seleccione el tipo ordenamiento: "))
         año_in = int(input("Ingrese el año inicial: "))
         año_fin = int(input("Ingrese el año final: "))
-        (total, elapsed_time_mseg, artistas) = controller.req_1(catalog, año_in, año_fin, tipo_ord)
+        (total, elapsed_time_mseg, tiempo_req, artistas) = controller.req_1(catalog, año_in, año_fin, tipo_ord)
         print("Para mostrar estos datos el tiempo (mseg) fue: " + str(elapsed_time_mseg))
         print("Hay " + str(total) + " artistas entre " + str(año_in) + " y " + str(año_fin))
         print("A continuación se muestran los primeros y ultimos tres: ")
         print(artistas)
+        print("El tiempo de respuesta para este requerimiento fue: " + str(tiempo_req))
 
     elif int(inputs[0]) == 3:
         print("Tipos de algoritmos de ordenamiento iterativo:\n1- Shell\n2- Insertion\n3- Merge\n4- Quick")
         tipo_ord = int(input("Seleccione el tipo ordenamiento: "))
         fecha_in = (input("Ingrese la fecha inicial (YYYY-MM-DD): "))
         fecha_fin = (input("Ingrese la fecha final (YYYY-MM-DD): "))
-        (total, purchase, elapsed_time_mseg, obras) = controller.req_2(catalog, fecha_in, fecha_fin, tipo_ord)
+        (total, purchase, elapsed_time_mseg, tiempo_req, obras) = controller.req_2(catalog, fecha_in, fecha_fin, tipo_ord)
         print("Para mostrar estos datos el tiempo (mseg) fue: " + str(elapsed_time_mseg))
         print("Fueron adquiridas " + str(total) + " obras entre " + str(fecha_in) + " y " + str(fecha_fin))
         print(str(purchase) + " de estas fueron compradas. ")
         print("A continuación se muestran las primeras y ultimas tres: ")
         print(obras)
+        print("El tiempo de respuesta para este requerimiento fue: " + str(tiempo_req))
 
     elif int(inputs[0]) == 4:
         artista=input("Ingrese el nombre del artista de interés:  ")
-        (total_obras, total_tecnicas, mas_utilizada, lista_obras) = controller.req_3(catalog, artista)
+        (total_obras, total_tecnicas, mas_utilizada, tiempo_req, lista_obras) = controller.req_3(catalog, artista)
         print(artista + " tiene un total de " + total_obras + " en el museo.")
         print("Hay " + total_tecnicas + " tipos diferentes de medios/tecnicas en su colección.")
         print("Su tecnica mas utilizada es " + mas_utilizada)
         print("A continuación se muestran las obras en las que " + artista + "utilizó esta tecnica")
         print(lista_obras)
+        print("El tiempo de respuesta para este requerimiento fue: " + str(tiempo_req))
 
     elif int(inputs[0]) == 5:
-        (sorted_dict, lista_def, nac_mas, n_obras_nac_mas) = controller.req_4(catalog)
+        (sorted_dict, lista_def, nac_mas, tiempo_req, n_obras_nac_mas) = controller.req_4(catalog)
         print("El Top 10 de nacionalidades en el MoMA es: " + str(sorted_dict))
         print("La nacionalidad más frecuente en el MoMA es " + (nac_mas) + " con " + str(n_obras_nac_mas) + " obras.")
         print("A continuación se muestran las primeras y ultimas tres: ")
         print(lista_def)
+        print("El tiempo de respuesta para este requerimiento fue: " + str(tiempo_req))
     
     elif int(inputs[0]) == 6:
         dep = input("Ingrese el departamento del que desea transportar las obras: ")
-        (total_obras, costo_tot, peso_tot, lista_transp_def, obras_costos_def) = controller.req_5(catalog, dep)
+        (total_obras, costo_tot, peso_tot, lista_transp_def, tiempo_req, obras_costos_def) = controller.req_5(catalog, dep)
         print("El costo por transportar las obras del departamento " + dep + " fue: " + str(costo_tot))
         print("El numero total de obras por transportar es " + str(total_obras))
         print("El peso total de las obras es de: " + str(peso_tot))
@@ -129,19 +133,21 @@ while True:
         print("Las cinco obras más costosas por transportar son: ")
         for obra in lt.iterator(obras_costos_def):
             print(obra)
+        print("El tiempo de respuesta para este requerimiento fue: " + str(tiempo_req))
     
     elif int(inputs[0]) == 7:
         ano_ini=input("Ingrese el año inicial de su busqueda: ")
         ano_fin=input("Ingrese el año final de su busqueda: ")
         Area_disp=input("Ingrese el area disponible: ")
-        (tot_obras_anos, tot_obras, Area_usada, prim_ult_5)= controller.req_6(catalog, ano_ini, ano_fin, Area_disp)
-        print("El MoMA va a exhibir obras desde " + ano_ini + " hasta " + ano_fin)
-        print("Hay " + tot_obras_anos + "obras posibles en un area de " + Area_disp + " m^2")
-        print("De las cuales " + tot_obras + "fue posible ubicarlas")
-        print("Llenando " + Area_usada + " m^2")
+        (tot_obras_anos, tot_obras, Area_usada, tiempo_req, prim_ult_5)= controller.req_6(catalog, ano_ini, ano_fin, Area_disp)
+        print("El MoMA va a exhibir obras desde " + str(ano_ini) + " hasta " + str(ano_fin))
+        print("Hay " + str(tot_obras_anos) + " obras posibles en un area de " + str(Area_disp) + " m^2")
+        print("De las cuales " + str(tot_obras) + " fue posible ubicarlas")
+        print("Llenando " + str(Area_usada) + " m^2")
         print("A continuación las primeras y ultimas 5 obras ubicadas en este area")
         for obra in lt.iterator(prim_ult_5):
             print(obra)
+        print("El tiempo de respuesta para este requerimiento fue: " + str(tiempo_req))
 
     else:
         sys.exit(0)

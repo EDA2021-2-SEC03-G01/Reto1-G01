@@ -186,13 +186,14 @@ def tiempo_ord_qs (lista, compare):
 # Requerimientos 
 
 def req_1(catalog, año_in, año_fin, tipo_ord):
+    start_time = time.process_time()
     lista = lt.newList()
     total = 0
     artistas = catalog["artists"]
     for i in range(1, lt.size(artistas)+1) :
     
         artista = lt.getElement(artistas, i)
-        if int(artista["BeginDate"]) > int(año_in) and int(artista["BeginDate"]) < int(año_fin):
+        if int(artista["BeginDate"]) >= int(año_in) and int(artista["BeginDate"]) <= int(año_fin):
             dic_artist = {"nombre": artista["DisplayName"], "Fecha de nacimiento": artista["BeginDate"], 
             "Fecha de fallecimiento": artista["EndDate"],  "Nacionalidad": artista["Nationality"],  "Genero": artista["Gender"] }
             lt.addLast(lista, dic_artist)
@@ -208,7 +209,9 @@ def req_1(catalog, año_in, año_fin, tipo_ord):
         elapsed_time_mseg = tiempo_ord_qs (lista, compareYears)
     #Primeros y últimos tres
     lista_def = primeros_ultimos(lista, 3)
-    return (total, elapsed_time_mseg, lista_def)
+    stop_time = time.process_time()
+    tiempo_req = (stop_time - start_time)*1000
+    return (total, elapsed_time_mseg, tiempo_req, lista_def)
 
 #Encontrar los nombres de los autores
 def nombres_autores(artistas, obra):
@@ -230,6 +233,7 @@ def nombres_autores(artistas, obra):
     return autores
         
 def req_2(catalog, fecha_in, fecha_fin, tipo_ord):
+    start_time = time.process_time()
     lista = lt.newList(datastructure="ARRAY_LIST")
     total = 0
     purchase = 0
@@ -263,10 +267,13 @@ def req_2(catalog, fecha_in, fecha_fin, tipo_ord):
         elapsed_time_mseg = tiempo_ord_qs (lista, compareDateAcquired)
     #Primeros y últimos tres
     lista_def = primeros_ultimos(lista, 3)
-    return (total, purchase, elapsed_time_mseg, lista_def)
+    stop_time = time.process_time()
+    tiempo_req = (stop_time - start_time)*1000
+    return (total, purchase, elapsed_time_mseg, tiempo_req, lista_def)
 
 
 def req_3(catalog, nom_artista):
+    start_time = time.process_time()
     artista=nom_artista
     lista=lt.newList()
     obras_tecnica = lt.newList(datastructure="ARRAY_LIST")
@@ -296,7 +303,9 @@ def req_3(catalog, nom_artista):
         if artista in lista[n]["Artistas"] and lista[n]["Medio"]==mas_utilizada:
             dic_obra={"Titulo": lista[n]["Titulo"], "Fecha": lista[n]["Fecha"], "Medio": lista[n]["Medio"], "Dimensiones": lista[n]["Dimensiones"]}
             lt.addLast(obras_tecnica, dic_obra)
-    return (total_obras, total_tecnicas, mas_utilizada, obras_tecnica)
+    stop_time = time.process_time()
+    tiempo_req = (stop_time - start_time)*1000
+    return (total_obras, total_tecnicas, mas_utilizada, tiempo_req, obras_tecnica)
 
 #Encontrar las nacionalidades de los autores
 def nac_autores(artistas, obra):
@@ -318,6 +327,7 @@ def nac_autores(artistas, obra):
     return autores
 
 def req_4(catalog):
+    start_time = time.process_time()
     obras = catalog["artworks"]
     artistas = catalog["artists"]
     solo_nac = lt.newList(datastructure="ARRAY_LIST")
@@ -357,9 +367,12 @@ def req_4(catalog):
     n_obras_nac_mas = lt.size(obras_nac_mas)
     #Primeras y últimas tres
     lista_def = primeros_ultimos(obras_nac_mas, 3)
-    return (sorted_dict, lista_def, nac_mas, n_obras_nac_mas)
+    stop_time = time.process_time()
+    tiempo_req = (stop_time - start_time)*1000
+    return (sorted_dict, lista_def, nac_mas, tiempo_req, n_obras_nac_mas)
 
 def req_5(catalog, dep):
+    start_time = time.process_time()
     obras = catalog["artworks"]
     artistas = catalog["artists"]
     costo_kg = 0.0
@@ -435,8 +448,8 @@ def req_5(catalog, dep):
             dic_artwork = {"Titulo": obra["Title"], "Artistas": autores, "Clasificacion":obra["Classification"], "Fecha": obra["Date"], "Medio": obra["Medium"],  "Dimensiones": obra["Dimensions"], "Costo transporte":costo_def}
             lt.addLast(obras_transp, dic_artwork)
             lt.addLast(obras_costos, dic_artwork)
-    obras_transp = sa.sort(obras_transp, compareDate)
-    obras_costos = sa.sort(obras_costos, compareCosto)
+    obras_transp = ms.sort(obras_transp, compareDate)
+    obras_costos = ms.sort(obras_costos, compareCosto)
     #cinco más viejas
     lista_transp_def = lt.newList()
     for pos in range(1, 6):
@@ -447,10 +460,12 @@ def req_5(catalog, dep):
     for pos in range(1, 6):
         obra = lt.getElement(obras_costos, pos)
         lt.addLast(obras_costos_def, obra)
-
-    return (total_obras, costo_tot, peso_tot, lista_transp_def, obras_costos_def)
+    stop_time = time.process_time()
+    tiempo_req = (stop_time - start_time)*1000
+    return (total_obras, costo_tot, peso_tot, lista_transp_def, tiempo_req, obras_costos_def)
 
 def req_6(catalog, ano_ini, ano_fin, Area_disp ):
+    start_time = time.process_time()
     tot_obras_anos=0
     tot_obras=0
     Area_usada=0
@@ -473,29 +488,29 @@ def req_6(catalog, ano_ini, ano_fin, Area_disp ):
             alto = obra["Height (cm)"]
             ancho = obra["Width (cm)"]
             prof = obra["Depth (cm)"]
-            while Area_usada<Area_disp:
+            while Area_usada<float(Area_disp):
                 if alto != "" and ancho != "":
-                    Area_usada =+ (float(alto)*0.01 *float(ancho)*0.01)
+                    Area_usada += (float(alto)*0.01 *float(ancho)*0.01)
                 elif alto != "" and largo != "":
-                    Area_usada =+ (float(alto)*0.01 *float(largo)*0.01) 
+                    Area_usada += (float(alto)*0.01 *float(largo)*0.01) 
                 elif alto != "" and prof != "":
-                    Area_usada =+ (float(alto)*0.01 *float(prof)*0.01)
+                    Area_usada += (float(alto)*0.01 *float(prof)*0.01)
                 elif ancho != "" and largo != "":
-                    Area_usada =+ (float(ancho)*0.01 *float(largo)*0.01)
+                    Area_usada += (float(ancho)*0.01 *float(largo)*0.01)
                 elif ancho != "" and prof != "":
-                    Area_usada =+ (float(ancho)*0.01 *float(prof)*0.01)
+                    Area_usada += (float(ancho)*0.01 *float(prof)*0.01)
                 elif largo != "" and prof != "":
-                    Area_usada =+ (float(largo)*0.01 *float(prof)*0.01)
+                    Area_usada += (float(largo)*0.01 *float(prof)*0.01)
                 elif diametro != "":
-                    Area_usada =+ ((((float(diametro)*0.01)/2)**2) * 3,14)
+                    Area_usada += ((((float(diametro)*0.01)/2)**2) * 3,14)
                 elif circum  != "":
-                    Area_usada =+ (((float(circum)*0.01)**2)/(4 * 3,14))
-                tot_obras =+ 1
+                    Area_usada += (((float(circum)*0.01)**2)/(4 * 3,14))
+                tot_obras += 1
                 autores = nombres_autores(artistas, obra)
-                dic_obra={"Titulo":obra["Title"], "Artista(s)":autores, "Fecha":obra["Date"], "Clasificacion":obra["Classification"], "Medio":obra["Medium"], "Dimensiones":obra["Dimensions"], "Adquisicion":obra["Date_Acquired"]}
+                dic_obra={"Titulo":obra["Title"], "Artista(s)":autores, "Fecha":obra["Date"], "Clasificacion":obra["Classification"], "Medio":obra["Medium"], "Dimensiones":obra["Dimensions"], "Adquisicion":obra["DateAcquired"]}
                 lt.addLast(obras_usadas, dic_obra)
-    obras_ord=sa.sort(obras_usadas,compareDateAcquired)
+    obras_ord=ms.sort(obras_usadas,compareDateAcquired)
     prim_ult_5=primeros_ultimos(obras_ord, 5)
-    return (tot_obras_anos, tot_obras, Area_usada, prim_ult_5)
-
-
+    stop_time = time.process_time()
+    tiempo_req = (stop_time - start_time)*1000
+    return (tot_obras_anos, tot_obras, Area_usada, tiempo_req, prim_ult_5)
